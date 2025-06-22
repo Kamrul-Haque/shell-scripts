@@ -36,7 +36,7 @@ echo "8. Installing Valet Linux globally via Composer..."
 composer global require cpriego/valet-linux
 
 echo "9. Adding Composer's global bin to PATH..."
-echo 'export PATH="$PATH:$(composer global config bin-dir --absolute)"' >> ~/.bashrc
+echo "export PATH=$PATH:$HOME/.composer/vendor/bin" >> ~/.zshrc
 . ~/.bashrc
 
 echo "10. Running valet install..."
