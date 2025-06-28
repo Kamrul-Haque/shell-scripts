@@ -32,8 +32,7 @@ npm -v
 echo "5. Installing MySQL Server..."
 sudo dnf install -y mysql-server
 mysql --version
-mysql -u"root" -p"" -e"ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';"
-mysql -u"root" -p"" -e"FLUSH PRIVILEGES;"
+sudo mysql -e"ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'; FLUSH PRIVILEGES;"
 
 echo "6. Installing Nginx.."
 sudo dnf install nginx

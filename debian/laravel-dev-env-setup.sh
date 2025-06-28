@@ -30,8 +30,7 @@ sudo apt install -y mysql-server
 mysql --version
 
 echo "6. Securing MySQL root User..."
-mysql -u"root" -p"" -e"ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';"
-mysql -u"root" -p"" -e"FLUSH PRIVILEGES;"
+sudo mysql -u -e"ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'; FLUSH PRIVILEGES;"
 
 echo "7. Installing Valet Linux dependencies..."
 sudo apt install -y network-manager libnss3-tools jq xsel nginx \
