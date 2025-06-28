@@ -48,7 +48,7 @@ composer global require genesisweb/valet-linux-plus
 
 echo "9. Adding Composer's global bin to PATH..."
 echo 'export PATH="$PATH:$HOME/.config/composer/vendor/bin"' >> ~/.bashrc
-. ~/.bashrc
+source ~/.bashrc
 
 echo "10. Running valet install..."
 valet install

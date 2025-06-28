@@ -30,7 +30,7 @@ sudo apt install -y mysql-server
 mysql --version
 
 echo "6. Securing MySQL root User..."
-sudo mysql -u -e"ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'; FLUSH PRIVILEGES;"
+sudo mysql -e"ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'; FLUSH PRIVILEGES;"
 
 echo "7. Installing Valet Linux dependencies..."
 sudo apt install -y network-manager libnss3-tools jq xsel nginx \
@@ -41,7 +41,7 @@ composer global require genesisweb/valet-linux-plus
 
 echo "9. Adding Composer's global bin to PATH..."
 echo 'export PATH="$PATH:$HOME/.config/composer/vendor/bin"' >> ~/.bashrc
-. ~/.bashrc
+source ~/.bashrc
 
 echo "10. Running valet install..."
 valet install
@@ -50,9 +50,7 @@ echo "11. Installing PHPMyAdmin..."
 npm install --global yarn
 cd ~
 mkdir projects
-npm install --global yarn
 git clone https://github.com/phpmyadmin/phpmyadmin.git
-cd phpmyadmin
 composer update --no-dev
 yarn install --production
 
