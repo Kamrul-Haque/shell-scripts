@@ -9,6 +9,9 @@ sudo apt install -y snapd
 source ~/.bashrc
 sudo snap install snap-store
 
+echo "Installing Transmission..."
+sudo apt install -y transmission
+
 echo "Installing VS Code from Snap..."
 sudo snap install code --classic
 
@@ -18,10 +21,10 @@ sudo snap install phpstorm --classic
 echo "Installing Postman from Snap..."
 sudo snap install postman
 
-echo "Installing MPV Player from Flathub..."
+echo "Installing MPV Player from Snap..."
 sudo snap install vlc
 
-echo "Intalling Steam..."
+echo "Installing Steam..."
 sudo apt install -y steam
 
 echo "Done! ✅"
