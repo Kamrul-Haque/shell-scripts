@@ -5,22 +5,26 @@ FILENAME="phpMyAdmin-${VERSION}-english.zip"
 DIRECT_URL="https://files.phpmyadmin.net/phpMyAdmin/${VERSION}/${FILENAME}"
 
 echo "1. Installing git and curl..."
-sudo apt update && sudo apt install -y git curl
+sudo dnf update && sudo dnf install -y git curl
 
-echo "2. Adding PHP 8.3 PPA and installing PHP 8.3 with Laravel-required modules..."
-sudo add-apt-repository ppa:ondrej/php -y
-sudo apt update
-sudo apt install -y php8.3 php8.3-cli php8.3-fpm php8.3-mbstring php8.3-xml php8.3-bcmath php8.3-curl php8.3-mysql php8.3-zip php8.3-common php8.3-mcrypt
+echo "2. Adding PHP 8.3 Remi Repo and installing PHP 8.3 with Laravel-required modules..."
+sudo dnf install http://rpms.remirepo.net/fedora/remi-release-42.rpm -y
+sudo dnf module enable php:remi-8.3
+sudo dnf install php php-cli php-fpm
+sudo dnf install openssl php-bcmath php-curl php-json php-mbstring php-mysql php-tokenizer php-xml php-zip php-posix php-mcrypt php-gd
+sudo systemctl start php-fpm
+sudo systemctl enable php-fpm
 php -v
+php-fpm -v
 
 echo "3. Installing Composer..."
 cd ~
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-php -r "if (hash_file('sha384', 'composer-setup.php') === 'ed0feb545ba87161262f2d45a633e34f591ebb3381f2e0063c345ebea4d228dd0043083717770234ec00c5a9f9593792') { echo 'Installer verified'.PHP_EOL; } else { echo 'Installer corrupt'.PHP_EOL; unlink('composer-setup.php'); exit(1); }"
+php -r "if (hash_file('sha384', 'composer-setup.php') === 'c8b085408188070d5f52bcfe4ecfbee5f727afa458b2573b8eaaf77b3419b0bf2768dc67c86944da1544f06fa544fd47') { echo 'Installer verified'.PHP_EOL; } else { echo 'Installer corrupt'.PHP_EOL; unlink('composer-setup.php'); exit(1); }"
 php composer-setup.php
 php -r "unlink('composer-setup.php');"
 sudo mv composer.phar /usr/local/bin/composer
-composer
+composer --version
 
 echo "4. Installing Node.js from official source..."
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
@@ -30,24 +34,28 @@ node -v
 npm -v
 
 echo "5. Installing MySQL Server..."
-sudo apt install -y mysql-server
+sudo dnf install -y mysql-server
 mysql --version
+mysql -u"root" -p"" -e"ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';"
+mysql -u"root" -p"" -e"FLUSH PRIVILEGES;"
 
-echo "6. Securing MySQL root User..."
-sudo mysql -e"ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'; FLUSH PRIVILEGES;"
+echo "6. Installing Nginx.."
+sudo dnf install nginx
+sudo systemctl start nginx
+sudo systemctl enable nginx
+nginx -v
 
 echo "7. Installing Valet Linux dependencies..."
-sudo apt install -y network-manager libnss3-tools jq xsel nginx \
-php8.3-cli php8.3-curl php8.3-mbstring php8.3-mcrypt php8.3-xml php8.3-zip
+sudo dnf install curl nss-tools jq xsel openssl ca-certificates
 
 echo "8. Installing Valet Linux globally via Composer..."
-composer global require genesisweb/valet-linux-plus
+composer global require genesisweb/valet-linux-plus:dev-master
 
 echo "9. Adding Composer's global bin to PATH..."
 echo 'export PATH="$PATH:$HOME/.config/composer/vendor/bin"' >> ~/.bashrc
 
 echo "10. Running valet install..."
-~/.config/composer/vendor/bin/valet install
+$HOME/.config/composer/vendor/bin/valet install
 
 echo "11. Installing PHPMyAdmin..."
 mkdir -p ~/projects && cd ~/projects
